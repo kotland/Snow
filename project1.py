@@ -39,18 +39,17 @@ class Snow:
         self.status = NORMAL
         self.transform()
         self.angle = 6
-        self.area = None
-        self.rect = None
+        w, h = 55, 55
+        self.area = pygame.Rect(0, 0, w, h)
+        self.area_rect = self.area
 
     def events(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.status = MOVE_DOWN
 
     def draw_rect(self, screen):
-        w, h = 55, 55
-        self.area = rect = pygame.Rect(0, 0, w, h)
-        rect.center = self.pos.as_point()
-        pygame.draw.rect(screen, (0, 200, 0), rect, 2)
+        self.area_rect.center = self.pos.as_point()
+        pygame.draw.rect(screen, (0, 200, 0), self.area_rect, 2)
 
     def update(self, dt):
         if self.pos.x > PLATFORM[0]:
@@ -63,12 +62,12 @@ class Snow:
         self.move()
 
     def check_area_list(self, obj_list):
-        obj_list = [obj.rect for obj in obj_list if not obj is self]  # созбается список и пересекаемыми объектами
+        obj_list = [obj.area_rect for obj in obj_list if not obj is self]  # созбается список и пересекаемыми объектами
         return self.area.collidelistall(obj_list)
 
     def check_area(self, obj_list):
         obj_list = [obj.rect for obj in obj_list if not obj is self]  # созбается список и пересекаемыми объектами
-        print( self.area.collidelistall(obj_list))
+        # print(self.area.collidelistall(obj_list))
 
     def move(self):
         if self.status == MOVE_DOWN:
@@ -93,7 +92,17 @@ screen = pygame.display.get_surface()
 snow_list = []
 
 for _ in range(NUM_SNOWS):
-    snow_list.append(Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1])))))
+    snow = Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1]))))
+    collide_list = snow.check_area_list(snow_list)
+    print(_)
+    print(collide_list)
+    if _ in collide_list:
+        print("!!!")
+    snow_list.append(snow)
+# r = snow_list[0].check_area_list(snow_list)
+
+# for _ in range(NUM_SNOWS):
+#     snow_list.append(Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1])))))
 
 
 
@@ -117,10 +126,9 @@ while True:
             sys.exit()
 
         if e.type in (pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN):
-            print('Mouse Down')
+            # print('Mouse Down')
             for snow in snow_list:
                 snow.events(e)
-
 
     dt = clock.tick(FPS)
     for snow in snow_list:
