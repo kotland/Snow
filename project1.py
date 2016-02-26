@@ -1,4 +1,4 @@
-# посмотреть пересечение снежинки и подумать как его избежать
+# сделать счетчик снежинок, при привышении лимита break
 import os
 import sys
 import random
@@ -56,9 +56,14 @@ class Snow:
         if self.pos.x < 0:
             self.pos.x = PLATFORM[0]
         if self.pos.y > PLATFORM[1]:
+            print("recreate --> ", self.check_area_list(snow_list))
             self.pos.y = random.randint(-100, -50)
             self.pos.x = random.randint(0, PLATFORM[0])
+            while len(self.check_area_list(snow_list)) > 0:
+                self.pos.y = random.randint(-100, -50)
+                self.pos.x = random.randint(0, PLATFORM[0])
         self.move()
+
 
     def check_area_list(self, obj_list):
         obj_list = [obj.area.move(obj.pos.as_point()) for obj in obj_list if
@@ -84,7 +89,7 @@ class Snow:
         self.image = pygame.transform.scale(self.image, (60, 50))
 
 
-NUM_SNOWS = 20
+NUM_SNOWS = 40
 
 pygame.init()
 display = pygame.display.set_mode((500, 500))
@@ -92,16 +97,20 @@ display = pygame.display.set_mode((500, 500))
 screen = pygame.display.get_surface()
 snow_list = []
 # snow_coords = [(100, 100), (110, 100), (225, 250), (250, 250)] # координаты снежинок для проверки пересечений
-
-for _ in range(NUM_SNOWS):
+i = 0
+while len(snow_list) < NUM_SNOWS:
+    i += 1
     # snow = Snow(snow_coords[_])
     snow = Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1]))))
     collide_list = snow.check_area_list(snow_list)
     if len(collide_list) >= 2:  # сколько пересечений должно быть в списке
-        print("snow {} with {}".format(_, collide_list))
-    snow_list.append(snow)
+        continue
+    else:
+        print("snow", i, "with", collide_list)
+        snow_list.append(snow)
 
-clock = pygame.time.Clock()
+        clock = pygame.time.Clock()
+print('num snows', len(snow_list))
 
 while True:
     for e in pygame.event.get():
@@ -121,4 +130,5 @@ while True:
         snow.render(screen)
 
     pygame.display.flip()
+
 
