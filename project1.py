@@ -15,7 +15,7 @@ PLATFORM = (500, 500)
 
 def load_image(name, alpha_cannel):
     fullname = os.path.join('examples', name)
-    print(fullname)
+    # print(fullname)
 
     try:
         image = pygame.image.load(fullname)
@@ -33,7 +33,6 @@ def load_image(name, alpha_cannel):
 class Snow:
     def __init__(self, pos):
         self.image = load_image('11037430.gif', 1)
-        # self.rect = self.image.get_rect()
         self.pos = Vector(pos)
         self.speed = Vector((0, 1))
         self.status = NORMAL
@@ -41,15 +40,15 @@ class Snow:
         self.angle = 6
         w, h = 55, 55
         self.area = pygame.Rect(0, 0, w, h)
-        self.area_rect = self.area
+
 
     def events(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.status = MOVE_DOWN
 
     def draw_rect(self, screen):
-        self.area_rect.center = self.pos.as_point()
-        pygame.draw.rect(screen, (0, 200, 0), self.area_rect, 2)
+        self.area.center = self.pos.as_point()
+        pygame.draw.rect(screen, (0, 200, 0), self.area, 2)
 
     def update(self, dt):
         if self.pos.x > PLATFORM[0]:
@@ -62,12 +61,14 @@ class Snow:
         self.move()
 
     def check_area_list(self, obj_list):
-        obj_list = [obj.area_rect for obj in obj_list if not obj is self]  # созбается список и пересекаемыми объектами
-        return self.area.collidelistall(obj_list)
+        obj_list = [obj.area.move(obj.pos.as_point()) for obj in obj_list if
+                    not obj is self]  # создается список и пересекаемыми объектами
+        area = self.area.move(self.pos.as_point())
+        return area.collidelistall(obj_list)
 
-    def check_area(self, obj_list):
-        obj_list = [obj.rect for obj in obj_list if not obj is self]  # созбается список и пересекаемыми объектами
-        # print(self.area.collidelistall(obj_list))
+    # def check_area(self, obj_list):
+    # obj_list = [obj.rect for obj in obj_list if not obj is self]  # создается список и пересекаемыми объектами и выводится
+    # # print(self.area.collidelistall(obj_list))
 
     def move(self):
         if self.status == MOVE_DOWN:
@@ -90,34 +91,16 @@ display = pygame.display.set_mode((500, 500))
 
 screen = pygame.display.get_surface()
 snow_list = []
+# snow_coords = [(100, 100), (110, 100), (225, 250), (250, 250)] # координаты снежинок для проверки пересечений
 
 for _ in range(NUM_SNOWS):
+    # snow = Snow(snow_coords[_])
     snow = Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1]))))
     collide_list = snow.check_area_list(snow_list)
-    print(_)
-    print(collide_list)
-    if _ in collide_list:
-        print("!!!")
+    if len(collide_list) >= 2:  # сколько пересечений должно быть в списке
+        print("snow {} with {}".format(_, collide_list))
     snow_list.append(snow)
-# r = snow_list[0].check_area_list(snow_list)
 
-# for _ in range(NUM_SNOWS):
-#     snow_list.append(Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1])))))
-
-
-
-
-
-# snow_1 = Snow((0, 50))
-# snow_2 = Snow((100, 150))
-# snow_3 = Snow((200, 70))
-# snow_4 = Snow((300, 180))
-# snow_5 = Snow((350, 0))
-# snow_6 = Snow((0, 250))
-# snow_7 = Snow((80, 350))
-# snow_8 = Snow((200, 250))
-# snow_9 = Snow((300, 400))
-# snow_10 = Snow((400, 300))
 clock = pygame.time.Clock()
 
 while True:
@@ -126,7 +109,6 @@ while True:
             sys.exit()
 
         if e.type in (pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN):
-            # print('Mouse Down')
             for snow in snow_list:
                 snow.events(e)
 
@@ -138,7 +120,5 @@ while True:
     for snow in snow_list:
         snow.render(screen)
 
-    snow_list[0].draw_rect(screen)
-    snow_list[0].check_area(snow_list)
     pygame.display.flip()
 

@@ -30,6 +30,7 @@ examples/
 2.py
 ex.py
 h.py
+images.jpeg
 
 
 # PyInstaller
@@ -58,6 +59,7 @@ coverage.xml
 
 # Django stuff:
 *.log
+
 
 # Sphinx documentation
 docs/_build/
