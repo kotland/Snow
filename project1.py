@@ -11,7 +11,9 @@ FPS = 60
 MOVE_DOWN = 4
 NORMAL = 0
 PLATFORM = (500, 500)
-speed_snow = Vector((0, random.randint(3, 4)))
+NUM_SNOWS = 30
+TURN_LEFT = 1
+TURN_RIGHT = 2
 
 
 def load_image(name, alpha_cannel):
@@ -44,14 +46,17 @@ class Snow:
 
 
     def events(self, event):
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.status = MOVE_DOWN
+
 
     def draw_rect(self, screen):
         self.area.center = self.pos.as_point()
         pygame.draw.rect(screen, (0, 200, 0), self.area, 2)
 
     def update(self, dt):
+
         if self.pos.x > PLATFORM[0]:
             self.pos.x = 0
         if self.pos.x < 0:
@@ -60,11 +65,12 @@ class Snow:
             print("recreate --> ", self.check_area_list(snow_list))
             self.pos.y = random.randint(-100, -50)
             self.pos.x = random.randint(0, PLATFORM[0])
+            self.speed = Vector((0, random.randint(4, 5)))  # меняем скорость при пересоздании
             # проверка списка с пересечениями при пересоздании
-            while len(self.check_area_list(snow_list)) > 5:
+            while len(self.check_area_list(snow_list)) >= 1:
                 self.pos.y = random.randint(-100, -50)
                 self.pos.x = random.randint(0, PLATFORM[0])
-            self.speed = speed_snow
+                self.speed = Vector((0, random.randint(4, 6)))  # меняем скорость при пересоздании
         self.move()
 
 
@@ -92,8 +98,6 @@ class Snow:
         self.image = pygame.transform.scale(self.image, (60, 50))
 
 
-NUM_SNOWS = 100
-
 pygame.init()
 display = pygame.display.set_mode((500, 500))
 
@@ -111,7 +115,8 @@ while len(snow_list) < NUM_SNOWS:
         # snow = Snow(snow_coords[_])
         snow = Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1]))))
         collide_list = snow.check_area_list(snow_list)
-        if len(collide_list) >= 1:  # сколько пересечений должно быть в списке
+
+        if len(collide_list) > 1:  # сколько пересечений должно быть в списке
             j += 1
             continue
         else:
@@ -121,9 +126,10 @@ while len(snow_list) < NUM_SNOWS:
             clock = pygame.time.Clock()
 
 print('num snows', len(snow_list))
-
+angle = 0
 while True:
     for e in pygame.event.get():
+        snow.events(e)
         if e.type == pygame.QUIT:
             sys.exit()
 
@@ -138,7 +144,7 @@ while True:
     screen.fill((0, 0, 0))
     for snow in snow_list:
         snow.render(screen)
-
+    angle += 1
     pygame.display.flip()
 
 
