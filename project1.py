@@ -9,12 +9,10 @@ from Vector import Vector
 
 FPS = 60
 MOVE_DOWN = 4
-NORMAL = 0
 PLATFORM = (500, 500)
 NUM_SNOWS = 30
-TURN_LEFT = 1
-TURN_RIGHT = 2
-
+NORMAL = 0
+MOVE_IN_SIDE = "wind"
 
 def load_image(name, alpha_cannel):
     fullname = os.path.join('examples', name)
@@ -38,17 +36,21 @@ class Snow:
         self.image = load_image('11037430.gif', 1)
         self.pos = Vector(pos)
         self.speed = Vector((0, 1))
-        self.status = NORMAL
         self.transform()
         self.angle = 6
+        self.status = NORMAL
         w, h = 55, 55
+        self.wind = Vector((0.01, 0))
+        self.wind_time = 0
         self.area = pygame.Rect(0, 0, w, h)
 
-
     def events(self, event):
-
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.status = MOVE_DOWN
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                self.speed += Vector((0.1, 0))
+
 
 
     def draw_rect(self, screen):
@@ -56,22 +58,30 @@ class Snow:
         pygame.draw.rect(screen, (0, 200, 0), self.area, 2)
 
     def update(self, dt):
+        # время изменения ветра
+        self.wind_time += dt
+        if self.wind_time >= 1000:
+            self.wind_time = 0
+            print("Change wind")
+            self.wind *= -1
+
 
         if self.pos.x > PLATFORM[0]:
             self.pos.x = 0
         if self.pos.x < 0:
             self.pos.x = PLATFORM[0]
-        if self.pos.y > PLATFORM[1]:
+        elif self.pos.y > PLATFORM[1]:
             print("recreate --> ", self.check_area_list(snow_list))
             self.pos.y = random.randint(-100, -50)
             self.pos.x = random.randint(0, PLATFORM[0])
             self.speed = Vector((0, random.randint(4, 5)))  # меняем скорость при пересоздании
             # проверка списка с пересечениями при пересоздании
-            while len(self.check_area_list(snow_list)) >= 1:
+            while len(self.check_area_list(snow_list)) >= 2:
                 self.pos.y = random.randint(-100, -50)
                 self.pos.x = random.randint(0, PLATFORM[0])
                 self.speed = Vector((0, random.randint(4, 6)))  # меняем скорость при пересоздании
         self.move()
+        self.speed += self.wind
 
 
     def check_area_list(self, obj_list):
@@ -88,10 +98,19 @@ class Snow:
         if self.status == MOVE_DOWN:
             self.pos += self.speed
 
+
     def render(self, screen):
+        # ресуем  вектор скорости
+        #ВЕКТОР
+        # dv = Vector((self.image.get_rect().w / 2, self.image.get_rect().h / 2))
+        # p1 = self.pos.as_point()
+        # p2 = (self.pos + self.speed*10).as_point()
+        # pygame.draw.line(screen, (100, 200, 200), p1, p2)
+
         self.rect = self.image.get_rect()  # создаем прямоугольник вокруг объекта
         self.rect.center = self.pos.as_point()  # центрируем в нем объект
-        pygame.draw.rect(screen, (100, 0, 100), self.rect, 1)
+        #ПРЯМОУГОЛЬНИК
+        # pygame.draw.rect(screen, (100, 0, 100), self.rect, 1)
         screen.blit(self.image, self.rect)
 
     def transform(self):
@@ -136,6 +155,7 @@ while True:
         if e.type in (pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN):
             for snow in snow_list:
                 snow.events(e)
+                print(snow.status)
 
     dt = clock.tick(FPS)
     for snow in snow_list:
