@@ -42,9 +42,9 @@ class Snow:
     def __init__(self, pos):
         self.image = load_image('11037430.gif', 1)
         self.pos = Vector(pos)
-        self.speed = Vector((0, 1))
+        self.speed = Vector((0, 5))
         self.transform()
-        self.angle = 6
+        # self.angle = 6
         self.status = MOVE_DOWN
         w, h = 55, 55
         self.wind = Vector((0.01, 0))
@@ -148,23 +148,21 @@ snow_list = []
 i = 0
 j = 0
 
+# Create snow
 while len(snow_list) < NUM_SNOWS:
     i += 1
+    # количество попыток пересоздания снежинки
     if j >= 300:
         break
-    else:
-        # snow = Snow(snow_coords[_])
-        snow = Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1]))))
-        collide_list = snow.check_area_list(snow_list)
+    snow = Snow((random.randint(0, PLATFORM[0]), (random.randint(0, PLATFORM[1]))))
+    collide_list = snow.check_area_list(snow_list)
 
-        if len(collide_list) > 1:  # сколько пересечений должно быть в списке
-            j += 1
-            continue
-        else:
-            # print("snow", i, "with", collide_list)
-            snow_list.append(snow)
+    if len(collide_list) > 1:  # сколько пересечений должно быть в списке
+        j += 1
+        continue
+    snow_list.append(snow)
 
-            clock = pygame.time.Clock()
+    clock = pygame.time.Clock()
 
 print('num snows', len(snow_list))
 angle = 0
