@@ -45,7 +45,7 @@ class Snow:
         self.speed = Vector((0, 1))
         self.transform()
         self.angle = 6
-        self.status = NORMAL
+        self.status = MOVE_DOWN
         w, h = 55, 55
         self.wind = Vector((0.01, 0))
         self.wind2 = Vector((-0.05, 0))
@@ -58,8 +58,6 @@ class Snow:
         self.wind2_blow = True
 
     def events(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            self.status = MOVE_DOWN
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
                 self.speed += Vector((0.1, 0))
