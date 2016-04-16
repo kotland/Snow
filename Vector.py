@@ -38,7 +38,6 @@ class Vector:
         except ZeroDivisionError:
             return Vector((0, 0))
 
-
     def update(self):
         pass
 
@@ -58,7 +57,6 @@ class Vector:
                 else math.degrees(math.acos(self.x / self.len()))
         except ZeroDivisionError:
             return 0
-
 
     def render(self, screen):
         pygame.draw.line(screen, (250, 0, 0), (0, 0), (self.x, self.y))
