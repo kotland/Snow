@@ -1,11 +1,23 @@
 # menu
 
+import random
+import settings
+from Classes.Snow import Snow
+from Classes.Snow import snow_list
 import sys
 import pygame
 from Classes.Button import Button
 
 NUM_SNOWS = 20
 FPS = 60
+pygame.init()
+display = pygame.display.set_mode((500, 500))
+
+screen = pygame.display.get_surface()
+
+i = 0
+j = 0
+clock = pygame.time.Clock()
 
 
 class Menu:
@@ -19,12 +31,17 @@ class Menu:
                                    path='Buttons', function=self.on_btn_settings, text='Settings ', w=200)
         self.btn_exit = Button(pos=(200, 260), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
                                path='Buttons', function=self.on_btn_exit, text='Exit ', w=200)
+        self.work = True
 
     def on_btn_exit(self):
         sys.exit()
 
     def on_btn_start(self):
-        print('start')
+        self.work = False
+        win_snow = Program()
+        win_snow.run()
+        # print('start')
+
 
     def on_btn_settings(self):
         print('settings')
@@ -40,7 +57,7 @@ class Menu:
         self.btn_exit.event(event)
 
     def run(self):
-        while True:
+        while self.work:
             self.screen.fill((10, 100, 100))
 
             for event in pygame.event.get():
@@ -64,31 +81,55 @@ class Program:
         self.snow_list = []
         self.create_snow()
 
+    def on_btn_menu(self):
+        self.work = False
+        win_snow = Menu()
+        win_snow.run()
+        # print('menu')
+
     def create_snow(self):
         # Create snow
-        while len(self.snow_list) < NUM_SNOWS:
-            pass
+        i = 0
+        j = 0
+        while len(snow_list) < settings.NUM_SNOWS:
+            i += 1
+            # количество попыток пересоздания снежинки
+            if j >= 300:
+                break
+            snow = Snow((random.randint(0, settings.PLATFORM[0]), (random.randint(0, settings.PLATFORM[1]))))
+            collide_list = snow.check_area_list(snow_list)
+
+            if len(collide_list) > 1:  # сколько пересечений должно быть в списке
+                j += 1
+                continue
+            snow_list.append(snow)
+
+
+        # print('num snows', len(snow_list))
 
     def run(self):
+        angle = 0
         while True:
             for e in pygame.event.get():
-                snow.events(e)
                 if e.type == pygame.QUIT:
                     sys.exit()
+                if e.type == pygame.MOUSEBUTTONDOWN:
+                    self.on_btn_menu()
 
                 if e.type in (pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN):
-                    for snow in self.snow_list:
+                    for snow in snow_list:
                         snow.events(e)
                         # print(snow.status)
-            dt = self.clock.tick(FPS)
-            for snow in self.snow_list:
+            dt = clock.tick(settings.FPS)
+            for snow in snow_list:
                 snow.update(dt)
 
-            self.screen.fill((0, 0, 0))
-            for snow in self.snow_list:
-                snow.render(self.screen)
-            # angle += 1
+            screen.fill((10, 100, 100))
+            for snow in snow_list:
+                snow.render(screen)
+            angle += 1
             pygame.display.flip()
+
 
 
 win = Menu()

@@ -22,11 +22,6 @@ class Snow:
         w, h = 55, 55
         self.area = pygame.Rect(0, 0, w, h)
 
-    def events(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                self.speed += Vector((0.1, 0))
-
     def draw_rect(self, screen):
         self.area.center = self.pos.as_point()
         pygame.draw.rect(screen, (0, 200, 0), self.area, 2)

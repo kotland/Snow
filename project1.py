@@ -8,6 +8,7 @@ pygame.init()
 display = pygame.display.set_mode((500, 500))
 
 screen = pygame.display.get_surface()
+clock = pygame.time.Clock()
 
 i = 0
 j = 0
@@ -32,7 +33,6 @@ print('num snows', len(snow_list))
 angle = 0
 while True:
     for e in pygame.event.get():
-        snow.events(e)
         if e.type == pygame.QUIT:
             sys.exit()
 
