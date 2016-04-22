@@ -1,6 +1,3 @@
-import random
-import pygame
-
 from Vector import Vector
 
 
@@ -11,9 +8,6 @@ class Wind:
         self.time = 0
         self.timings = [blow_time, stop_time]
         self.blow = True
-
-    def update(self, dt):
-        pass
 
 
 class ConstantWind(Wind):

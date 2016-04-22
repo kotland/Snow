@@ -44,7 +44,7 @@ while True:
     for snow in snow_list:
         snow.update(dt)
 
-    screen.fill((0, 0, 0))
+    screen.fill((10, 100, 100))
     for snow in snow_list:
         snow.render(screen)
     angle += 1
