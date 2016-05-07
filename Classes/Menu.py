@@ -2,7 +2,8 @@ import sys
 import pygame
 from Classes.Button import Button
 from Classes.Program import Program
-
+from settings import *
+from Classes.Settings import Settings
 
 display = pygame.display.set_mode((500, 500))
 
@@ -10,16 +11,17 @@ screen = pygame.display.get_surface()
 
 
 class Menu:
-    def __init__(self):
+    def __init__(self, num_snows_scroll=30):
         pygame.init()
+        self.num_snows_scroll = num_snows_scroll
         self.screen = pygame.display.set_mode((640, 480))
         self.btn_start = Button(pos=(200, 150), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
-                                path='Buttons', function=self.on_btn_start, text='Start! ', w=200)
+                                path=BUTTON_IMAGE_PATH, function=self.on_btn_start, text='Start! ', w=200)
         self.btn_settings = Button(pos=(200, 205),
                                    image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
-                                   path='Buttons', function=self.on_btn_settings, text='Settings ', w=200)
+                                   path=BUTTON_IMAGE_PATH, function=self.on_btn_settings, text='Settings ', w=200)
         self.btn_exit = Button(pos=(200, 260), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
-                               path='Buttons', function=self.on_btn_exit, text='Exit ', w=200)
+                               path=BUTTON_IMAGE_PATH, function=self.on_btn_exit, text='Exit ', w=200)
         self.work = True
 
     def on_btn_exit(self):
@@ -27,12 +29,14 @@ class Menu:
 
     def on_btn_start(self):
         self.work = False
-        win_snow = Program()
+        win_snow = Program(self.num_snows_scroll)
         win_snow.run()
         # print('start')
 
     def on_btn_settings(self):
-        print('settings')
+        self.work = False
+        win_settings = Settings()
+        win_settings.run()
 
     def render(self):
         self.btn_start.render(self.screen)

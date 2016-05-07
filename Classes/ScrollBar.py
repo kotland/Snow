@@ -2,12 +2,14 @@ from helpers import *
 import pygame
 from pygame import *
 from Classes.Text import Text
+from settings import *
 
 
 class ScrollBar:  # ползунок.
     def __init__(self, x, y, max_num, min_num=0, text=None):
-        self.scroll_image = load_image('scroll.png', 1, '../Unit')  # картинка ползунка
-        self.scrollbar_image = load_image('scrollbar.png', 1, '../Unit')  # картинка поля, по которому катается ползунок
+        self.scroll_image = load_image('scroll.png', 1, SCROLL_IMAGE_PATH)  # картинка ползунка
+        self.scrollbar_image = load_image('scrollbar.png', 1,
+                                          SCROLL_IMAGE_PATH)  # картинка поля, по которому катается ползунок
         self.x = x
         self.y = y
         self.x_scroll = x  # координата х ползунка, сначала равна координате поля

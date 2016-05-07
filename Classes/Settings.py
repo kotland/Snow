@@ -2,7 +2,7 @@ import sys
 import pygame
 from Classes.Button import Button
 from Classes.ScrollBar import ScrollBar
-
+from settings import *
 
 display = pygame.display.set_mode((500, 500))
 
@@ -11,35 +11,47 @@ class Settings:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((640, 480))
-        self.btn_start = Button(pos=(200, 150), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
-                                path='../Buttons', function=self.on_btn_start, text='1 ', w=200)
-        self.btn_settings = Button(pos=(200, 205),
-                                   image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
-                                   path='../Buttons', function=self.on_btn_settings, text='Wind ', w=200)
-        self.btn_exit = Button(pos=(200, 260), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
-                               path='../Buttons', function=self.on_btn_exit, text='2 ', w=200)
+        self.btn_start = Button(pos=(200, 150), image_names=('button_on.png', 'button_hover.png',
+                                                             'button_click.png'),
+                                path=BUTTON_IMAGE_PATH,
+                                function=self.on_btn_start, text='settings ', w=200)
+        self.btn_settings_wind = Button(pos=(200, 205),
+                                        image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
+                                        path=BUTTON_IMAGE_PATH,
+                                        function=self.on_btn_settings_wind, text='Settings wind ', w=200)
+        self.btn_back_to_menu = Button(pos=(200, 260), image_names=('button_on.png', 'button_hover.png',
+                                                                    'button_click.png'),
+                                       path=BUTTON_IMAGE_PATH,
+                                       function=self.on_btn_back_to_menu, text='Back to menu', w=200)
         self.scrollbar = ScrollBar(200, 75, 100, text='Number snow')
         self.work = True
+        self.num_snows_scroll = None
 
-    def on_btn_exit(self):
-        sys.exit()
+    def on_btn_back_to_menu(self):
+        from Classes.Menu import Menu
+
+        self.work = False
+        num_snows_scroll = self.scrollbar.get_num()  # кол-во снежинок = значение снежинок на скроллинге
+        print("from sc = ", num_snows_scroll)
+        win_snow = Menu(num_snows_scroll)
+        win_snow.run()
+
+    def on_btn_settings_wind(self):
+        print('Settings wind')
 
     def on_btn_start(self):
-        print('start')
-
-    def on_btn_settings(self):
-        print('settings')
+        print('1')
 
     def render(self):
         self.btn_start.render(self.screen)
-        self.btn_settings.render(self.screen)
-        self.btn_exit.render(self.screen)
+        self.btn_back_to_menu.render(self.screen)
+        self.btn_settings_wind.render(self.screen)
         self.scrollbar.render(self.screen)
 
     def event(self, event):
         self.btn_start.event(event)
-        self.btn_settings.event(event)
-        self.btn_exit.event(event)
+        self.btn_back_to_menu.event(event)
+        self.btn_settings_wind.event(event)
         self.scrollbar.event(event)
 
     def run(self):
@@ -53,9 +65,10 @@ class Settings:
 
                     # self.update(0)
             self.render()
+            # print(self.scrollbar.get_num())
 
             pygame.display.flip()
 
 
-Settings_program = Settings()
-Settings_program.run()
+            # Settings_program = Settings()
+            # Settings_program.run()
