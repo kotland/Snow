@@ -6,7 +6,8 @@ from settings import *
 
 
 class ScrollBar:  # ползунок.
-    def __init__(self, x, y, max_num, min_num=0, text=None):
+    # FIXME: не корректно работает с min значениями больше нуля
+    def __init__(self, x, y, max_num=30, min_num=0, text=None):
         self.scroll_image = load_image('scroll.png', 1, SCROLL_IMAGE_PATH)  # картинка ползунка
         self.scrollbar_image = load_image('scrollbar.png', 1,
                                           SCROLL_IMAGE_PATH)  # картинка поля, по которому катается ползунок

@@ -8,7 +8,7 @@ from Classes.Wind import StrongWind, ConstantWind
 
 class Snow:
     def __init__(self, pos):
-        self.image = helpers.load_image('11037430.gif', 1, SNOW_IMAGE_PATH)
+        self.image = helpers.load_image('Bez_imeni.png', 1, IMAGE_PATH)
         self.pos = Vector(pos)
         self.speed = Vector((0, 5))
         self.transform()
@@ -40,7 +40,7 @@ class Snow:
             while len(self.check_area_list(self.snow_list)) >= 2:
                 self.pos.y = random.randint(-100, -50)
                 self.pos.x = random.randint(0, PLATFORM[0])
-                self.speed = Vector((0, random.randint(4, 6)))  # меняем скорость при пересоздании
+                self.speed = Vector((0, random.randint(3, 5)))  # меняем скорость при пересоздании
         self.move()
         self.speed += self.winds[0].dir + self.winds[1].dir
 
@@ -50,30 +50,25 @@ class Snow:
         area = self.area.move(self.pos.as_point())
         return area.collidelistall(obj_list)
 
-    # def check_area(self, obj_list):
-    # obj_list = [obj.rect for obj in obj_list if not obj is self]  # создается список и пересекаемыми объектами и выводится
-    # # print(self.area.collidelistall(obj_list))
-
     def move(self):
         if self.status == MOVE_DOWN:
             self.pos += self.speed
 
     def render(self, screen):
-        ''
-
-        # ресуем  вектор скорости
-        # ВЕКТОР
-        # dv = Vector((self.image.get_rect().w / 2, self.image.get_rect().h / 2))
-        # p1 = self.pos.as_point()
-        # p2 = (self.pos + self.speed*10).as_point()
-        # pygame.draw.line(screen, (100, 200, 200), p1, p2)
-        ''
+        if MODE == 'debug':  # отладочный материал
+            # ресуем  вектор скорости
+            # ВЕКТОР
+            dv = Vector((self.image.get_rect().w / 2, self.image.get_rect().h / 2))
+            p1 = self.pos.as_point()
+            p2 = (self.pos + self.speed * 10).as_point()
+            pygame.draw.line(screen, (100, 200, 200), p1, p2)
 
         self.rect = self.image.get_rect()  # создаем прямоугольник вокруг объекта
         self.rect.center = self.pos.as_point()  # центрируем в нем объект
         # ПРЯМОУГОЛЬНИК
-        # pygame.draw.rect(screen, (100, 0, 100), self.rect, 1)
+        if MODE == 'debug':  # отладочный материал
+            pygame.draw.rect(screen, (100, 0, 100), self.rect, 1)
         screen.blit(self.image, self.rect)
 
     def transform(self):
-        self.image = pygame.transform.scale(self.image, (60, 50))
+        self.image = pygame.transform.scale(self.image, (9, 9))

@@ -11,7 +11,7 @@ screen = pygame.display.get_surface()
 
 
 class Menu:
-    def __init__(self, num_snows_scroll=30):
+    def __init__(self, num_snows_scroll=350):
         pygame.init()
         self.num_snows_scroll = num_snows_scroll
         self.screen = pygame.display.set_mode((640, 480))

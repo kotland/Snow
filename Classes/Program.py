@@ -23,9 +23,11 @@ class Program:
         self.num_snows = num_snows
         self.create_snow()
         self.screen = pygame.display.get_surface()
+        self.background_image = pygame.transform.scale(load_image(BACKGROUNG_IMG, 0, IMAGE_PATH), PLATFORM)
 
     def on_btn_menu(self):
         from Classes.Menu import Menu
+
         self.work = False
         win_snow = Menu()
         win_snow.run()
@@ -48,9 +50,13 @@ class Program:
                 j += 1
                 continue
             self.snow_list.append(snow)
+            print(len(self.snow_list))
 
 
             # print('num snows', len(snow_list))
+
+    # def transform(self):
+    #     self.background_image = pygame.transform.scale(self.background_image, PLATFORM)
 
     def run(self):
         angle = 0
@@ -69,7 +75,7 @@ class Program:
             for snow in self.snow_list:
                 snow.update(dt)
 
-            self.screen.fill((10, 100, 100))
+            self.screen.blit(self.background_image, (0, 0))
             for snow in self.snow_list:
                 snow.render(self.screen)
             angle += 1

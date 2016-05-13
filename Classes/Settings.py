@@ -18,12 +18,12 @@ class Settings:
         self.btn_settings_wind = Button(pos=(200, 205),
                                         image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
                                         path=BUTTON_IMAGE_PATH,
-                                        function=self.on_btn_settings_wind, text='Settings wind ', w=200)
+                                        function=self.on_btn_settings_wind, text=' Background ', w=200)
         self.btn_back_to_menu = Button(pos=(200, 260), image_names=('button_on.png', 'button_hover.png',
                                                                     'button_click.png'),
                                        path=BUTTON_IMAGE_PATH,
                                        function=self.on_btn_back_to_menu, text='Back to menu', w=200)
-        self.scrollbar = ScrollBar(200, 75, 100, text='Number snow')
+        self.scrollbar = ScrollBar(200, 75, min_num=0, max_num=500, text='Number snow')
         self.work = True
         self.num_snows_scroll = None
 
@@ -37,7 +37,7 @@ class Settings:
         win_snow.run()
 
     def on_btn_settings_wind(self):
-        print('Settings wind')
+        print('Background')
 
     def on_btn_start(self):
         print('1')
