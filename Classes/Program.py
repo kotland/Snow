@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 
 
 class Program:
-    def __init__(self, num_snows):
+    def __init__(self, num_snows, background=BACKGROUNG_IMG):
         pygame.init()
         pygame.display.set_mode((500, 500))
 
@@ -23,7 +23,7 @@ class Program:
         self.num_snows = num_snows
         self.create_snow()
         self.screen = pygame.display.get_surface()
-        self.background_image = pygame.transform.scale(load_image(BACKGROUNG_IMG, 0, IMAGE_PATH), PLATFORM)
+        self.background_image = pygame.transform.scale(load_image(background, 0, IMAGE_PATH), PLATFORM)
 
     def on_btn_menu(self):
         from Classes.Menu import Menu

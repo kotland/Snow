@@ -11,25 +11,27 @@ screen = pygame.display.get_surface()
 
 
 class Menu:
-    def __init__(self, num_snows_scroll=350):
+    def __init__(self, num_snows_scroll=350, background=BACKGROUNG_IMG):
         pygame.init()
         self.num_snows_scroll = num_snows_scroll
-        self.screen = pygame.display.set_mode((640, 480))
-        self.btn_start = Button(pos=(200, 150), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
+        self.screen = pygame.display.set_mode((500, 500))
+        self.btn_start = Button(pos=(150, 150), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
                                 path=BUTTON_IMAGE_PATH, function=self.on_btn_start, text='Start! ', w=200)
-        self.btn_settings = Button(pos=(200, 205),
+        self.btn_settings = Button(pos=(150, 205),
                                    image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
                                    path=BUTTON_IMAGE_PATH, function=self.on_btn_settings, text='Settings ', w=200)
-        self.btn_exit = Button(pos=(200, 260), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
+        self.btn_exit = Button(pos=(150, 260), image_names=('button_on.png', 'button_hover.png', 'button_click.png'),
                                path=BUTTON_IMAGE_PATH, function=self.on_btn_exit, text='Exit ', w=200)
         self.work = True
+        self.background = background
+        self.background_image = pygame.transform.scale(load_image(self.background, 0, IMAGE_PATH), PLATFORM)
 
     def on_btn_exit(self):
         sys.exit()
 
     def on_btn_start(self):
         self.work = False
-        win_snow = Program(self.num_snows_scroll)
+        win_snow = Program(self.num_snows_scroll, background=self.background if self.background else None)
         win_snow.run()
         # print('start')
 
@@ -50,7 +52,7 @@ class Menu:
 
     def run(self):
         while self.work:
-            self.screen.fill((10, 100, 100))
+            self.screen.blit(self.background_image, (0, 0))
 
             for event in pygame.event.get():
                 self.event(event)
