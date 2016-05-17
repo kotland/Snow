@@ -19,7 +19,7 @@ class Settings:
                                                                     'button_click.png'),
                                        path=BUTTON_IMAGE_PATH,
                                        function=self.on_btn_back_to_menu, text='Back to menu', w=200)
-        self.scrollbar = ScrollBar(150, 150, min_num=300, max_num=5000, text='Number snow')
+        self.scrollbar = ScrollBar(150, 150, min_num=50, max_num=5000, text='Number snow')
         self.work = True
         self.num_snows_scroll = None
         self.background = background

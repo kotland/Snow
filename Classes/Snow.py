@@ -17,7 +17,7 @@ class Snow:
         wind1 = StrongWind(0.01, 0, 1, 0)
         wind2 = ConstantWind(-0.05, 0, random.randint(2000, 3000), 7000)
         self.winds = [wind1, wind2]
-        w, h = 55, 55
+        w, h = 20, 20
         self.area = pygame.Rect(0, 0, w, h)
 
     def draw_rect(self, screen):
@@ -70,4 +70,4 @@ class Snow:
         screen.blit(self.image, self.rect)
 
     def transform(self):
-        self.image = pygame.transform.scale(self.image, (9, 9))
+        self.image = pygame.transform.scale(self.image, (15, 15))
