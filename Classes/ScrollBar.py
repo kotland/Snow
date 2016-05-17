@@ -6,7 +6,6 @@ from settings import *
 
 
 class ScrollBar:  # ползунок.
-    # FIXME: не корректно работает с min значениями больше нуля
     def __init__(self, x, y, max_num=30, min_num=0, text=None):
         self.scroll_image = load_image('scroll.png', 1, SCROLL_IMAGE_PATH)  # картинка ползунка
         self.scrollbar_image = load_image('scrollbar.png', 1,
@@ -20,7 +19,7 @@ class ScrollBar:  # ползунок.
         self.MouseOnScroll = False  # ползунок отпущен
         self.rect = self.scroll_image.get_rect()
         self.rect.move_ip(self.x_scroll, self.y)
-        self.num = 0  # значение ползунка, по умолчанию 0
+        self.num = min_num  # значение ползунка, по умолчанию min_num
         self.num_scroll()  # метод, преобразующий значение ползунка в текст, который потом выводится на экран
         self.text = None  # подпись к ползунку
         if text:
@@ -69,7 +68,9 @@ class ScrollBar:  # ползунок.
                 # если на ползунок нажали и держат и курсор находится внутри ползунка
                 self.x_scroll += event.rel[0]  # новая координата ползунка=старая+смещение
                 rect = self.scrollbar_image.get_rect()
-                self.num = int((self.x_scroll - self.x) / ((rect.w - self.rect.w) / (self.max_num - self.min_num)))
+                            # вот тут поправила. Теперь рассчитывается пропорционально от минимального значения.
+                self.num = self.min_num + int((self.x_scroll - self.x) / ((rect.w - self.rect.w) / (self.max_num -
+                                                                                                    self.min_num)))
                 if self.x_scroll > self.x + rect.w - self.rect.w:  # если ползунок уехал за поле, то
                     self.num = self.max_num
                     self.x_scroll = self.x + rect.w - self.rect.w  # его координата равна концу поля
@@ -77,7 +78,9 @@ class ScrollBar:  # ползунок.
                     self.num = self.min_num
                     self.x_scroll = self.x  # координата ползунка приравнивается к началу поля
                 else:
-                    self.num = int((self.x_scroll - self.x) / ((rect.w - self.rect.w) / (self.max_num - self.min_num)))
+                                # вот тут поправила. Теперь рассчитывается пропорционально от минимального значения.
+                    self.num = self.min_num + int((self.x_scroll - self.x) / ((rect.w - self.rect.w) / (self.max_num -
+                                                                                                        self.min_num)))
                 self.rect.x = self.x_scroll
                 if self.num < self.min_num:
                     self.num = self.min_num

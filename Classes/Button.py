@@ -75,10 +75,7 @@ class Button:  # основная кнопка
             self.current_image = self.images[2]
 
     def check_mouse_coords(self, xy):  # проверяет, находятся ли координаты мыши в ректе картинки
-        if self.rect.collidepoint(xy):
-            return True
-        else:
-            return False
+        return self.rect.collidepoint(xy)
 
     def update(self, dt):
         pass
