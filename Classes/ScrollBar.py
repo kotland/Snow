@@ -1,5 +1,3 @@
-from helpers import *
-import pygame
 from pygame import *
 from Classes.Text import Text
 from settings import *

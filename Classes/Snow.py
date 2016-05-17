@@ -1,5 +1,4 @@
 import random
-import pygame
 from settings import *
 import helpers
 from Vector import Vector

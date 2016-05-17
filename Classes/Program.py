@@ -1,7 +1,6 @@
 import random
 import settings
 from Classes.Snow import Snow
-# from Classes.Snow import snow_list
 from Classes.Settings import *
 import sys
 import pygame
@@ -17,6 +16,7 @@ class Program:
         pygame.init()
         pygame.display.set_mode((500, 500))
 
+        self.background = background
         self.screen = pygame.display.get_surface()
         self.clock = pygame.time.Clock()
         self.snow_list = []
@@ -29,9 +29,8 @@ class Program:
         from Classes.Menu import Menu
 
         self.work = False
-        win_snow = Menu()
+        win_snow = Menu(background=self.background)
         win_snow.run()
-        # print('menu')
 
     def create_snow(self):
         i = 0
