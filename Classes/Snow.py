@@ -45,7 +45,7 @@ class Snow:
 
     def check_area_list(self, obj_list):
         obj_list = [obj.area.move(obj.pos.as_point()) for obj in obj_list if
-                    not obj is self]  # создается список и пересекаемыми объектами
+                    not obj is self]  # создается список с пересекаемыми объектами
         area = self.area.move(self.pos.as_point())
         return area.collidelistall(obj_list)
 
