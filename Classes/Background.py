@@ -21,12 +21,11 @@ class SelectBackground:
         self.button_clicked = False
 
     def on_btn_back_to_menu(self):
-        from Classes.Menu import Menu
+        from Classes.Settings import Settings
 
         self.work = False
-        win_snow = Menu(background=self.background)
+        win_snow = Settings(background=self.background)
         win_snow.run()
-        print('menu')
 
     def on_btn(self):
         self.button_clicked = True
