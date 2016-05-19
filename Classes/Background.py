@@ -16,11 +16,11 @@ class SelectBackground:
         self.work = True
         self.background_image = pygame.transform.scale(load_image(self.background, 0, IMAGE_PATH), PLATFORM)
         self.backgrounds = ['3.jpg', '4.jpg', '6.jpg', '5.jpg']
-        self.buttons = []
+        self.buttons = [] # список кнопок
         self.button_constructor()
         self.button_clicked = False
 
-    def on_btn_back_to_menu(self):
+    def on_btn_back_to_settings(self):
         from Classes.Settings import Settings
 
         self.work = False
@@ -61,16 +61,16 @@ class SelectBackground:
             pygame.display.flip()
 
     def button_constructor(self):
-        # Метод создаёт кнопки, в зависимости от кол-ва картинок и автоматичекси размещает на расстоянии 55px
+        # Метод создаёт кнопки, в зависимости от кол-ва картинок и автоматически размещает на расстоянии 55px
         y = 100  # Расстояние первой кнопки от верхнего края
         for i, image in enumerate(self.backgrounds):  # enumerate() возвращает индекс элемента и его значение
             self.buttons.append(Button(pos=(150, y), image_names=('button_on.png', 'button_hover.png',
                                                                   'button_click.png'), path=BUTTON_IMAGE_PATH,
                                        function=self.on_btn, text=' Background N%s ' % (i+1), w=200))
             y += 55
-        self.btn_back_to_menu = Button(pos=(150, y), image_names=('button_on.png', 'button_hover.png',
+        self.btn_back_to_settings = Button(pos=(150, y), image_names=('button_on.png', 'button_hover.png',
                                                                   'button_click.png'), path=BUTTON_IMAGE_PATH,
-                                       function=self.on_btn_back_to_menu, text='Back to menu', w=200)
+                                       function=self.on_btn_back_to_settings, text='Back to settings', w=200)
 
     def change_image(self, image_num):
         self.background = self.backgrounds[image_num]
