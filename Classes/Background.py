@@ -20,11 +20,11 @@ class SelectBackground:
         self.button_constructor()
         self.button_clicked = False
 
-    def on_btn_back_to_settings(self):
-        from Classes.Settings import Settings
+    def on_btn_back_to_menu(self):
+        from Classes.Menu import Menu
 
         self.work = False
-        win_snow = Settings(background=self.background)
+        win_snow = Menu(background=self.background)
         win_snow.run()
 
     def on_btn(self):
@@ -68,9 +68,9 @@ class SelectBackground:
                                                                   'button_click.png'), path=BUTTON_IMAGE_PATH,
                                        function=self.on_btn, text=' Background N%s ' % (i+1), w=200))
             y += 55
-        self.btn_back_to_settings = Button(pos=(150, y), image_names=('button_on.png', 'button_hover.png',
+        self.btn_back_to_menu = Button(pos=(150, y), image_names=('button_on.png', 'button_hover.png',
                                                                   'button_click.png'), path=BUTTON_IMAGE_PATH,
-                                       function=self.on_btn_back_to_settings, text='Back to settings', w=200)
+                                       function=self.on_btn_back_to_menu, text='Back to settings', w=200)
 
     def change_image(self, image_num):
         self.background = self.backgrounds[image_num]
