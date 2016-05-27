@@ -20,8 +20,8 @@ class Settings:
                                        path=BUTTON_IMAGE_PATH,
                                        function=self.on_btn_back_to_menu, text='Back to menu', w=200)
 
-        self.scrollbar = ScrollBar(150, 150, min_num=50, max_num=5000, text='Number snow')
-        self.scrollbar_wind = ScrollBar(150, 220, min_num=5, max_num=500, text='Wind power')
+        self.scrollbar = ScrollBar(150, 150, min_num=50, max_num=5000, text='Number snow') # изменение кол-ва снежинок
+        self.scrollbar_wind = ScrollBar(150, 220, min_num=5, max_num=500, text='Wind power') # изменение силы ветра
         self.work = True
         self.num_snows_scroll = None
         self.background = background
