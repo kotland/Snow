@@ -12,10 +12,11 @@ clock = pygame.time.Clock()
 
 
 class Program:
-    def __init__(self, num_snows, background=BACKGROUNG_IMG):
+    def __init__(self, num_snows, background=BACKGROUNG_IMG, wind_power=50):
         pygame.init()
         pygame.display.set_mode((500, 500))
 
+        self.wind_power = wind_power
         self.background = background
         self.screen = pygame.display.get_surface()
         self.clock = pygame.time.Clock()
@@ -42,7 +43,8 @@ class Program:
             # количество попыток пересоздания снежинки
             if j >= 300:
                 break
-            snow = Snow((random.randint(0, settings.PLATFORM[0]), (random.randint(0, settings.PLATFORM[1]))))
+            snow = Snow((random.randint(0, settings.PLATFORM[0]), (random.randint(0, settings.PLATFORM[1]))),
+                        wind_power=self.wind_power)
             collide_list = snow.check_area_list(self.snow_list)
 
             if len(collide_list) > 1:  # сколько пересечений должно быть в списке

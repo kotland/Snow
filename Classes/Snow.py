@@ -6,7 +6,7 @@ from Classes.Wind import StrongWind, ConstantWind
 
 
 class Snow:
-    def __init__(self, pos):
+    def __init__(self, pos, wind_power=50):
         self.image = helpers.load_image('Bez_imeni.png', 1, IMAGE_PATH)
         self.pos = Vector(pos)
         self.speed = Vector((0, 5))
@@ -15,7 +15,7 @@ class Snow:
         self.snow_list = []
         self.status = MOVE_DOWN
         wind1 = StrongWind(0.01, 0, 1, 0)
-        wind2 = ConstantWind(-0.05, 0, random.randint(2000, 3000), 7000)
+        wind2 = ConstantWind(-1*wind_power/1000, 0, random.randint(2000, 3000), 7000)
         self.winds = [wind1, wind2]
         w, h = 20, 20
         self.area = pygame.Rect(0, 0, w, h)
